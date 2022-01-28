@@ -11,6 +11,7 @@ const blogSchema = new mongoose.Schema({
     category: String,
     description: String,
     date: String,
+    comment: [{ name: String, email: String, comment: String }]
 })
 
 const blogModel = mongoose.model('Blog', blogSchema);

@@ -217,7 +217,18 @@ app.delete('/deleteUserBlog/:id', async(req, res)=>{
 
 
 
-
+// add-comment-main-blog 
+app.put('/changeComment/:id', async(req, res)=>{
+    const com= req.body
+    const id = req.params.id;
+    blogModel.findOneAndUpdate({_id:id},{comment: com},{new:true},(err, data)=>{
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
 
 
 
