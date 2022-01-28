@@ -9,6 +9,7 @@ const port = process.env.PORT || 4000;
 // all-schema
 const userModel = require('./schema/userSchema')
 const blogModel = require('./schema/blogSchema')
+const blogModelForUser = require('./schema/userBlogSchema')
 
 
 app.use(express.json());
@@ -84,20 +85,48 @@ app.put('/makeAdmin/:email',(req, res) => {
 })
 
 
-//posting a blog
+//posting a blog to main blog for admin
 
 app.post('/addBlog',(req, res) => {
-    const {title,price,location,name,email,category,img,description,date}= req.body
+    const {title,price,location,name,email,category,photo,description,date}= req.body
     const newBlog = new blogModel({
         title,
         email,
         name,
         price,
-        photo: img,
+        photo,
         location,
         category,
         description,
         date,
+    }) 
+
+    newBlog.save((err, data) => {
+        if (err) {
+            res.json(err)
+        } else {
+            res.json(data)
+        }
+    })
+})
+
+
+
+//posting a blog to main blog for normal user
+
+app.post('/addBlogForUser',(req, res) => {
+    const {title,price,location,name,email,category,photo,description,date,status}= req.body
+    const newBlog = new blogModelForUser({
+        title,
+        email,
+        name,
+        price,
+        photo,
+        location,
+        category,
+        description,
+        date,
+        status,
     }) 
 
     newBlog.save((err, data) => {
@@ -117,6 +146,79 @@ app.get('/blogs' ,async(req, res)=>{
     const result = await blogModel.find({});
     res.json(result);
 })
+
+
+// getting-all-normal-user-blog
+app.get('/userBlogs' ,async(req, res)=>{
+    const result = await blogModelForUser.find({});
+    res.json(result);
+})
+
+
+// find-blog-by-id
+
+app.get('/blogDetail/:id', async(req, res)=>{
+    const result = await blogModel.find({_id:req.params.id});
+    res.json(result)
+})
+
+
+
+// find-blog-by-email
+
+app.get('/blogDetailByEmail/:email', async(req, res)=>{
+    const result = await blogModelForUser.find({email:req.params.email});
+    res.json(result)
+})
+
+
+// changing-status
+
+app.put('/changeStatus/:id', async(req, res)=>{
+    const id = req.params.id;
+    blogModelForUser.findOneAndUpdate({_id:id},{status: 'approved'},{new:true},(err, data)=>{
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+
+// delete-blog-from-main-blog
+
+app.delete('/deleteBlog/:id', async(req, res)=>{
+    const id = req.params.id;
+    blogModel.findOneAndDelete({_id:id},(err, data)=>{
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+
+// delete-blog-from-user-collection
+
+app.delete('/deleteUserBlog/:id', async(req, res)=>{
+    const id = req.params.id;
+    blogModelForUser.findOneAndDelete({_id:id},(err, data)=>{
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+
+
+
+
+
+
 
 
 
