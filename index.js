@@ -88,7 +88,7 @@ app.put('/makeAdmin/:email',(req, res) => {
 //posting a blog to main blog for admin
 
 app.post('/addBlog',(req, res) => {
-    const {title,price,location,name,email,category,photo,description,date}= req.body
+    const {title,price,location,name,email,category,photo,description,date,ratting}= req.body
     const newBlog = new blogModel({
         title,
         email,
@@ -99,6 +99,7 @@ app.post('/addBlog',(req, res) => {
         category,
         description,
         date,
+        ratting,
     }) 
 
     newBlog.save((err, data) => {
@@ -115,7 +116,7 @@ app.post('/addBlog',(req, res) => {
 //posting a blog to main blog for normal user
 
 app.post('/addBlogForUser',(req, res) => {
-    const {title,price,location,name,email,category,photo,description,date,status}= req.body
+    const {title,price,location,name,email,category,photo,description,date,status,ratting}= req.body
     const newBlog = new blogModelForUser({
         title,
         email,
@@ -127,6 +128,7 @@ app.post('/addBlogForUser',(req, res) => {
         description,
         date,
         status,
+        ratting,
     }) 
 
     newBlog.save((err, data) => {

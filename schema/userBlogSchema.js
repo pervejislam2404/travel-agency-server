@@ -12,6 +12,7 @@ const blogSchemaUser = new mongoose.Schema({
     description: String,
     date: String,
     status: String,
+    ratting: String,
 })
 
 const blogModelForUser = mongoose.model('UserBlog', blogSchemaUser);

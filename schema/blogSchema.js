@@ -11,7 +11,8 @@ const blogSchema = new mongoose.Schema({
     category: String,
     description: String,
     date: String,
-    comment: [{ name: String, email: String, comment: String }]
+    comment: [{ name: String, email: String, comment: String, photo: String }],
+    ratting: String,
 })
 
 const blogModel = mongoose.model('Blog', blogSchema);
