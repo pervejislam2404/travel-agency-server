@@ -234,6 +234,20 @@ app.put('/changeComment/:id', async(req, res)=>{
 
 
 
+// find-blog-by-category
+
+app.get('/blogs/:category', async(req, res)=>{
+    const category = req.params.category; 
+    const result = await blogModel.find({category:category});
+    res.json(result)
+})
+
+
+
+
+
+
+
 
 
 app.listen(port, () => {
